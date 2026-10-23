@@ -98,13 +98,19 @@ of them: the checker shares the solver's arithmetic limit. A check that recomput
   scratchpads (Nye et al., 2021, arXiv:2112.00114) and chain-of-thought (Wei et al., 2022, arXiv:2201.11903).
 - **Checking steps:** checking each step rather than the final answer is studied as process supervision (Lightman
   et al., 2023, arXiv:2305.20050).
+- **Re-reading:** having a model read the question again at inference improves reasoning (RE2; Xu et al., EMNLP
+  2024, arXiv:2309.06275). Our change is the step-local, trained version: each step re-reads the one instruction
+  it executes, inside the training records. A prompt-level test in larger models (QP) is the direct comparison
+  and is registered.
+- **Instruction chains:** instruction tuning on chains of subtasks is studied as Chain-of-Instructions (Hayati et
+  al., AAAI 2025, arXiv:2402.11532).
 - **Our contribution** is narrower. A step that cites the instruction it executes repairs a reading failure that
   step-level checking cannot detect. The effect is measured against matched controls, data scaling and unseen
   operations.
 - **Adapter:** LoRA is Hu et al. (2021, arXiv:2106.09685).
 
-*(To extend before deposit: work on instruction following under distribution shift and on copying mechanisms in
-small models.)*
+*(Still to check before deposit: copying and induction mechanisms in small models, and instruction following under
+distribution shift.)*
 
 ## 6. Limitations
 
