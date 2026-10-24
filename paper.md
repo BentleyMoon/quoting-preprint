@@ -15,6 +15,9 @@ no loss on familiar problems.
 - **Unseen operations:** it extended to two operations never trained or tested (+0.16 and +0.20).
 - **More data:** four times the training data without the change did not substitute for it (Qwen: 0.59
   unquoted at 1.6M tokens against 0.91 quoted at 400k; SmolLM: 0.16 against 0.48).
+- **A second task:** on word-editing chains with two operations absent from training, quoting raised Qwen's
+  accuracy from 0.09 to 0.33. Almost every remaining quoted failure names the right instruction and carries it out
+  wrongly.
 
 Every experiment was registered, with its predictions and scoring, before it ran. The scale is small and the task
 synthetic; we state what does not follow.
@@ -83,12 +86,30 @@ instruction. 25 were arithmetic slips, mostly in products above 1,000. The model
 of them: the checker shares the solver's arithmetic limit. A check that recomputes each product by a second route
 (splitting into tens or hundreds) flagged 0.61 of such slips in a follow-up experiment.
 
+**A second task (T).** Word-editing chains ("Start with: lamp river stone. Reverse the words. Uppercase word
+2."), trained on reverse, uppercase, drop, append and swap, and tested on chains containing "Sort the words." and
+"Duplicate word N.", which never appear in training. Same model, adapter, budget and seeds.
+
+| solve accuracy (seed means) | in | held |
+|---|---:|---:|
+| Qwen2.5-1.5B, unquoted | 0.92 | 0.09 |
+| Qwen2.5-1.5B, quoted | 0.96 | 0.33 |
+
+In 119 of the 120 quoted held failures, every step names the instruction it was given, in order. The error is in
+carrying out an operation the model never practised. Quoting mostly fixed "Duplicate word N" (95 to 42 first
+errors) and not "Sort the words" (58 to 67). The lower ceiling than in arithmetic (0.33 against 0.91) fits that
+reading: the arithmetic operations were familiar procedures under unfamiliar names, and these are new procedures.
+Quoting fixes reading; it does not teach a procedure.
+
 ## 4. Registered predictions
 
 - **Quoting (D11, D12):** all 8 registered predictions held.
 - **Data and generalisation (DX):** 6 of 8 registered checks held. SmolLM's quoted held accuracy did not rise with
   data (predicted +0.10, observed +0.00 to +0.03), and a recipe combining quoting with a problem-reading check and
   masked mistakes scored 0.78 held (predicted at least 0.88).
+- **Second task (T):** 2 of 3 held. The miss: unquoted failures were predicted to change the step count, the
+  arithmetic signature of misreading, in at least 0.30 of cases. They did in 0.01; in text the misreading shows as a
+  wrong edit inside a step that is present.
 - **Corrections:** two explanations written during the work were wrong and are corrected in the record. The
   failures were first attributed to chain length, then to an inability to square.
 
@@ -114,8 +135,8 @@ distribution shift.)*
 
 ## 6. Limitations
 
-- **Scale and task:** two base models of 1.5-1.7B parameters, synthetic English arithmetic, three seeds per
-  condition, and one family of unfamiliar operations plus one novel pair. Instructions here are short and can be
+- **Scale and task:** two base models of 1.5-1.7B parameters, synthetic English arithmetic and (for one model)
+  synthetic word edits, three seeds per condition, and one family of unfamiliar operations plus one novel pair. Instructions here are short and can be
   quoted verbatim; open-ended tasks, long instructions and larger models are untested.
 - **Unequal data:** the quoted condition saw about 13% fewer unique problems under the same token budget, which
   works against it.
