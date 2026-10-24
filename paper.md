@@ -14,7 +14,7 @@ no loss on familiar problems.
 - **Replication:** the gain held on three new seeds (+0.26 and +0.41).
 - **Unseen operations:** it extended to two operations never trained or tested (+0.16 and +0.20).
 - **More data:** four times the training data without the change did not substitute for it (Qwen: 0.59
-  unquoted at 1.6M tokens against 0.91 quoted at 400k).
+  unquoted at 1.6M tokens against 0.91 quoted at 400k; SmolLM: 0.16 against 0.48).
 
 Every experiment was registered, with its predictions and scoring, before it ran. The scale is small and the task
 synthetic; we state what does not follow.
@@ -75,7 +75,7 @@ A check that verifies each step's arithmetic cannot see these failures, because 
 |---|---:|---:|---:|
 | Qwen, unquoted | 0.63-0.66 | 0.58 | 0.59 |
 | Qwen, quoted | 0.91-0.92 | 0.93 | 0.93 |
-| SmolLM, unquoted | 0.07-0.11 | 0.12 | (running) |
+| SmolLM, unquoted | 0.07-0.11 | 0.12 | 0.16 |
 | SmolLM, quoted | 0.48-0.51 | 0.49 | 0.51 |
 
 **What remains.** For quoted Qwen, 31 of 1,080 held, newop and novel solve replies were wrong; none misread an
@@ -86,7 +86,7 @@ of them: the checker shares the solver's arithmetic limit. A check that recomput
 ## 4. Registered predictions
 
 - **Quoting (D11, D12):** all 8 registered predictions held.
-- **Data and generalisation (DX):** 5 of 7 scored checks held. SmolLM's quoted held accuracy did not rise with
+- **Data and generalisation (DX):** 6 of 8 registered checks held. SmolLM's quoted held accuracy did not rise with
   data (predicted +0.10, observed +0.00 to +0.03), and a recipe combining quoting with a problem-reading check and
   masked mistakes scored 0.78 held (predicted at least 0.88).
 - **Corrections:** two explanations written during the work were wrong and are corrected in the record. The
