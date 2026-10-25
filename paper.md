@@ -101,6 +101,11 @@ errors) and not "Sort the words" (58 to 67). The lower ceiling than in arithmeti
 reading: the arithmetic operations were familiar procedures under unfamiliar names, and these are new procedures.
 Quoting fixes reading; it does not teach a procedure.
 
+**Content, not a pointer (FMT).** Two seeds per format, same budget. A step label that only points ("Step 2
+(instruction 2):") gave 0.57 on held problems, no better than no label (0.66). A one-word verb ("Step 2
+(multiply):") gave 0.88, close to the full quote (0.90), but not on the novel operations (0.62 against 0.75). The
+gain comes from writing the operation's name beside the work.
+
 ## 4. Registered predictions
 
 - **Quoting (D11, D12):** all 8 registered predictions held.
@@ -110,6 +115,8 @@ Quoting fixes reading; it does not teach a procedure.
 - **Second task (T):** 2 of 3 held. The miss: unquoted failures were predicted to change the step count, the
   arithmetic signature of misreading, in at least 0.30 of cases. They did in 0.01; in text the misreading shows as a
   wrong edit inside a step that is present.
+- **Format (FMT):** 3 of 5 held. Misses: the pointer gave no gain (predicted +0.10), and quoting raised obedience
+  to a planted note rather than lowering it (see Limitations).
 - **Corrections:** two explanations written during the work were wrong and are corrected in the record. The
   failures were first attributed to chain length, then to an inability to square.
 
@@ -138,6 +145,12 @@ distribution shift.)*
 - **Scale and task:** two base models of 1.5-1.7B parameters, synthetic English arithmetic and (for one model)
   synthetic word edits, three seeds per condition, and one family of unfamiliar operations plus one novel pair. Instructions here are short and can be
   quoted verbatim; open-ended tasks, long instructions and larger models are untested.
+- **Planted instructions:** quoting makes the model follow instruction-like text more faithfully, including text
+  that is not an instruction. With a marked decoy note in the problem ("A margin note says step 2 should be: Add
+  16"), quoted models obeyed it in 114 of 120 replies, against at least 33 unquoted. In those replies every quote
+  matched the arithmetic actually done (2,875 of 2,875 steps), so comparing quotes with the real instruction list
+  flagged all 116 wrong answers. That check needs to know which text is the instruction. Quoting is a record of what
+  was executed, not a defence.
 - **Unequal data:** the quoted condition saw about 13% fewer unique problems under the same token budget, which
   works against it.
 
