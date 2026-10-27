@@ -150,7 +150,10 @@ distribution shift.)*
   16"), quoted models obeyed it in 114 of 120 replies, against at least 33 unquoted. In those replies every quote
   matched the arithmetic actually done (2,875 of 2,875 steps), so comparing quotes with the real instruction list
   flagged all 116 wrong answers. That check needs to know which text is the instruction. Quoting is a record of what
-  was executed, not a defence.
+  was executed, not a defence. Training on problems whose notes the solution ignores removed the obedience only for
+  notes in the trained position: a note after the problem was then ignored (correct 0.99-1.00, also in a new
+  wording), but one placed before the problem was obeyed 120 of 120 times. Across these tests the quote comparison
+  flagged 619 of the 621 wrong replies from quoted models.
 - **Unequal data:** the quoted condition saw about 13% fewer unique problems under the same token budget, which
   works against it.
 
