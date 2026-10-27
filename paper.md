@@ -152,8 +152,12 @@ distribution shift.)*
   flagged all 116 wrong answers. That check needs to know which text is the instruction. Quoting is a record of what
   was executed, not a defence. Training on problems whose notes the solution ignores removed the obedience only for
   notes in the trained position: a note after the problem was then ignored (correct 0.99-1.00, also in a new
-  wording), but one placed before the problem was obeyed 120 of 120 times. Across these tests the quote comparison
-  flagged 619 of the 621 wrong replies from quoted models.
+  wording), but one placed before the problem was obeyed 120 of 120 times. Training notes in three places and
+  wordings lowered obedience to a note in a place never trained on to 1 of 120, and to the before-the-problem note
+  to 18 of 120. On SmolLM-1.7B, with no notes in training, notes after the problem were passed over and a note
+  before it was obeyed in 0.92 of quoted replies (0.63 unquoted). Which notes a model reads at all depends on the
+  model and on where the note sits. Across these tests the quote comparison flagged 619 of the 621 wrong replies
+  from quoted Qwen models and 220 of the 228 obeyed SmolLM replies.
 - **Unequal data:** the quoted condition saw about 13% fewer unique problems under the same token budget, which
   works against it.
 
