@@ -1,25 +1,24 @@
-# Quote the instruction: a training-format change that fixes misreading in small models
+# Quote the instruction: writing each instruction into its step reduces misreading in small models
 
-Bentley Moon · futurisminstitute@gmail.com · draft, 2026-10-22
+Bentley Moon · ORCID 0009-0003-0053-1661 · futurisminstitute@gmail.com · preprint, 2026-10-28
 
 ## Abstract
 
 Small language models fine-tuned on step-by-step worked solutions often fail on problems that contain an
-instruction they never saw in training. In our setting these are failures of *reading*: the model drops the
-unfamiliar step, or replaces it with a familiar one, while every arithmetic step it does write is correct. A one-line change to the training format repairs most of this: each step names the
-instruction it carries out ("Step 2 ('Square it'): 23 x 23 = 529"). On held-out problems with two operations absent
-from training, accuracy rose from 0.63 to 0.91 for Qwen2.5-1.5B and from 0.07 to 0.48 for SmolLM-1.7B, with
-no loss on familiar problems.
-- **Replication:** the gain held on three new seeds (+0.26 and +0.41).
-- **Unseen operations:** it extended to two operations never trained or tested (+0.16 and +0.20).
-- **More data:** four times the training data without the change did not substitute for it (Qwen: 0.59
-  unquoted at 1.6M tokens against 0.91 quoted at 400k; SmolLM: 0.16 against 0.48).
-- **A second task:** on word-editing chains with two operations absent from training, quoting raised Qwen's
-  accuracy from 0.09 to 0.33. Almost every remaining quoted failure names the right instruction and carries it out
-  wrongly.
+instruction they never saw in training. In our setting the model misreads the instruction. It drops the
+unfamiliar step or replaces it with a familiar one, while every arithmetic step it does write is correct. We changed
+one thing in the training format: each step names the instruction it carries out ("Step 2 ('Square it'): 23 x 23 =
+529"); we call this quoting. On held-out problems with two operations absent from training, accuracy rose from 0.63 to 0.91 for
+Qwen2.5-1.5B and from 0.07 to 0.48 for SmolLM-1.7B, with no loss on familiar problems.
 
-Every experiment was registered, with its predictions and scoring, before it ran. The scale is small and the task
-synthetic; we state what does not follow.
+The gain held on three new seeds (+0.26 and +0.41) and on two operations never trained or tested (+0.16 and
++0.20). Four times the training data without the change did not match it (Qwen: 0.59 unquoted at 1.6M tokens
+against 0.91 quoted at 400k; SmolLM: 0.16 against 0.48). On a second task, word-editing chains with two operations
+absent from training, quoting raised Qwen's accuracy from 0.09 to 0.33; almost every remaining failure names the
+right instruction and carries it out wrongly.
+
+Each experiment's predictions and scoring were written down and committed before it ran. The models are small and
+the tasks synthetic; Section 6 lists the limits.
 
 ## 1. Setup
 
@@ -43,7 +42,7 @@ corrects (the format of our earlier experiment D3).
 (unquoted) or "Step 2 ('Multiply by 5'): 7 x 5 = 35." (quoted). Quoted steps are longer, so under the fixed
 token budget the quoted models saw fewer problems (about 1,960 against 2,256 for Qwen).
 
-## 2. The failure is reading
+## 2. What the failures are
 
 On the held family, most wrong answers from unquoted models contain no arithmetic error at all. Among wrong
 replies to problems containing "Square it", a correct squaring step was missing in 270 of 350 (Qwen) and 589 of 656
@@ -71,7 +70,7 @@ A check that verifies each step's arithmetic cannot see these failures, because 
 **Unseen operations.** On the novel family, quoting added +0.16 (Qwen, 0.77 against 0.61) and +0.20 (SmolLM,
 0.41 against 0.21).
 
-**Data does not substitute.** Held accuracy by training budget:
+**More data (DX).** Held accuracy by training budget:
 
 | | 400k | 800k | 1.6M |
 |---|---:|---:|---:|
@@ -98,9 +97,8 @@ In 119 of the 120 quoted held failures, every step names the instruction it was 
 carrying out an operation the model never practised. Quoting mostly fixed "Duplicate word N" (95 to 42 first
 errors) and not "Sort the words" (58 to 67). The lower ceiling than in arithmetic (0.33 against 0.91) fits that
 reading: the arithmetic operations were familiar procedures under unfamiliar names, and these are new procedures.
-Quoting repaired the reading of new instructions; it gave the model no procedure it had not practised.
 
-**Content, not a pointer (FMT).** Two seeds per format, same budget. A step label that only points ("Step 2
+**What the label must contain (FMT).** Two seeds per format, same budget. A step label that only points ("Step 2
 (instruction 2):") gave 0.57 on held problems, no better than no label (0.66). A one-word verb ("Step 2
 (multiply):") gave 0.88, close to the full quote (0.90), but not on the novel operations (0.62 against 0.75). The
 gain comes from writing the operation's name beside the work.
@@ -115,7 +113,7 @@ gain comes from writing the operation's name beside the work.
   arithmetic signature of misreading, in at least 0.30 of cases. They did in 0.01; in text the misreading shows as a
   wrong edit inside a step that is present.
 - **Format (FMT):** 3 of 5 held. Misses: the pointer gave no gain (predicted +0.10), and quoting raised obedience
-  to a planted note rather than lowering it (see Limitations).
+  to a planted note, which we had predicted it would lower (see Limitations).
 - **Corrections:** two explanations written during the work were wrong and are corrected in the record. The
   failures were first attributed to chain length, then to an inability to square.
 

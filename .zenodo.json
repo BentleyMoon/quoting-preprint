@@ -1,0 +1,21 @@
+{
+ "title": "Quote the instruction: writing each instruction into its step reduces misreading in small models",
+ "upload_type": "publication",
+ "publication_type": "preprint",
+ "description": "<p>Small language models fine-tuned on step-by-step solutions often fail on problems that contain instructions they never saw in training: they drop the unfamiliar step or replace it with a familiar one. Writing each instruction into the step that carries it out raised held-out accuracy from 0.63 to 0.91 (Qwen2.5-1.5B) and from 0.07 to 0.48 (SmolLM-1.7B). Each experiment's predictions and scoring were committed before it ran.</p>",
+ "creators": [
+  {
+   "name": "Moon, Bentley",
+   "orcid": "0009-0003-0053-1661"
+  }
+ ],
+ "license": "CC-BY-4.0",
+ "keywords": [
+  "language models",
+  "instruction following",
+  "chain of thought",
+  "fine-tuning",
+  "preregistration"
+ ],
+ "access_right": "open"
+}

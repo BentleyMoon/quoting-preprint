@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Quote the instruction: writing each instruction into its step reduces misreading in small models"
+authors:
+  - family-names: Moon
+    given-names: Bentley
+    orcid: "https://orcid.org/0009-0003-0053-1661"
+    website: "https://bentleymoon.com"
+type: article
+license: CC-BY-4.0
+version: 1.0.0
+date-released: "2026-10-28"
+repository-code: "https://github.com/BentleyMoon/quoting-preprint"
+url: "https://bentleymoon.com"
+keywords:
+  - language models
+  - instruction following
+  - chain of thought
+  - fine-tuning
+  - preregistration
