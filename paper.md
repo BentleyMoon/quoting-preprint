@@ -5,9 +5,8 @@ Bentley Moon · futurisminstitute@gmail.com · draft, 2026-10-22
 ## Abstract
 
 Small language models fine-tuned on step-by-step worked solutions often fail on problems that contain an
-instruction they never saw in training. We find that in our setting these failures are failures of *reading*, not of
-computation. The model drops the unfamiliar step, or replaces it with a familiar one, while every arithmetic step
-it does write is correct. A one-line change to the training format repairs most of this: each step names the
+instruction they never saw in training. In our setting these are failures of *reading*: the model drops the
+unfamiliar step, or replaces it with a familiar one, while every arithmetic step it does write is correct. A one-line change to the training format repairs most of this: each step names the
 instruction it carries out ("Step 2 ('Square it'): 23 x 23 = 529"). On held-out problems with two operations absent
 from training, accuracy rose from 0.63 to 0.91 for Qwen2.5-1.5B and from 0.07 to 0.48 for SmolLM-1.7B, with
 no loss on familiar problems.
@@ -99,7 +98,7 @@ In 119 of the 120 quoted held failures, every step names the instruction it was 
 carrying out an operation the model never practised. Quoting mostly fixed "Duplicate word N" (95 to 42 first
 errors) and not "Sort the words" (58 to 67). The lower ceiling than in arithmetic (0.33 against 0.91) fits that
 reading: the arithmetic operations were familiar procedures under unfamiliar names, and these are new procedures.
-Quoting fixes reading; it does not teach a procedure.
+Quoting repaired the reading of new instructions; it gave the model no procedure it had not practised.
 
 **Content, not a pointer (FMT).** Two seeds per format, same budget. A step label that only points ("Step 2
 (instruction 2):") gave 0.57 on held problems, no better than no label (0.66). A one-word verb ("Step 2
@@ -135,10 +134,16 @@ gain comes from writing the operation's name beside the work.
 - **Our contribution** is narrower. A step that cites the instruction it executes repairs a reading failure that
   step-level checking cannot detect. The effect is measured against matched controls, data scaling and unseen
   operations.
+- **Copying mechanisms:** transformers copy earlier tokens through induction heads (Olsson et al., 2022,
+  arXiv:2209.11895). A quoted step asks the model to copy the instruction's words forward before acting on them,
+  which may explain why the content matters and a bare pointer does not; we did not test the mechanism.
+- **Generalising to new instructions:** failure on unseen combinations of familiar parts is the classic finding of
+  SCAN (Lake and Baroni, 2018, arXiv:1711.00350). Our unfamiliar operations are new names for procedures the model
+  already has, which is the case quoting helps; new procedures (the word-edit task) it helps less.
+- **Planted instructions:** text in the input that a model treats as an instruction is studied as indirect prompt
+  injection (Greshake et al., 2023, arXiv:2302.12173). Marking which input is data reduces it (spotlighting; Hines et
+  al., 2024, arXiv:2403.14720). Our notes are a small, labelled version of that setting.
 - **Adapter:** LoRA is Hu et al. (2021, arXiv:2106.09685).
-
-*(Still to check before deposit: copying and induction mechanisms in small models, and instruction following under
-distribution shift.)*
 
 ## 6. Limitations
 
@@ -146,7 +151,7 @@ distribution shift.)*
   synthetic word edits, three seeds per condition, and one family of unfamiliar operations plus one novel pair. Instructions here are short and can be
   quoted verbatim; open-ended tasks, long instructions and larger models are untested.
 - **Planted instructions:** quoting makes the model follow instruction-like text more faithfully, including text
-  that is not an instruction. With a marked decoy note in the problem ("A margin note says step 2 should be: Add
+  that only looks like one. With a marked decoy note in the problem ("A margin note says step 2 should be: Add
   16"), quoted models obeyed it in 114 of 120 replies, against at least 33 unquoted. In those replies every quote
   matched the arithmetic actually done (2,875 of 2,875 steps), so comparing quotes with the real instruction list
   flagged all 116 wrong answers. That check needs to know which text is the instruction. Quoting is a record of what
